@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteCond %{THE_REQUEST} !/phpmyadmin [NC]
+RewriteCond %{THE_REQUEST} !/test.html [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ api.php [QSA,L]
