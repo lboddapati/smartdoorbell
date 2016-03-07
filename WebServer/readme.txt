@@ -41,6 +41,8 @@ NOTE: All the APIs return a json response.
         }
     }
 
+    Example: www.boddapati.com/visitors/2016-03-06
+
 3. PUT REQUEST TO UPDATE MOTION SENSOR STATUS
    Usage: PUT /motions_sensors/sensor_id/status HTTP/1.1
           Host: www.boddapati.com
@@ -55,6 +57,9 @@ NOTE: All the APIs return a json response.
         "status":"0"
     }
 
+    Check the example in test.html
+
+
 4. GET REQUEST TO GET MOTION SENSOR STATUS
    Usage: GET /motions_sensors/sensor_id HTTP/1.1
           Host: www.boddapati.com
@@ -67,6 +72,8 @@ NOTE: All the APIs return a json response.
         "id":"master_bedroom_sensor",
         "status":"0"
     }
+
+   Example: www.boddapati.com/motions_sensors/master_bedroom_sensor
 
 5. GET REQUEST TO GET ALL MOTION SENSORS STATUSES
    Usage: GET /motions_sensors HTTP/1.1
@@ -94,3 +101,5 @@ NOTE: All the APIs return a json response.
             }
         ]
     }
+
+   Example: www.boddapati.com/motions_sensors
