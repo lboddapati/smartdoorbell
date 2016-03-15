@@ -85,6 +85,8 @@ $app->post('/visitors', function ($request, $response, $args) {
             $resp_body["error"] = false;
             $resp_body["message"] = "image uploaded successfully";
             $response->withStatus(201);
+
+            push_visitor_notification($file);
  
         } catch(PDOException $e) {
             unlink($file);
@@ -102,6 +104,12 @@ $app->post('/visitors', function ($request, $response, $args) {
     $response->getBody()->write(json_encode($resp_body));
     return $response;
 });
+
+
+function push_visitor_notification($file) {
+    ServerRequestInterface $request = new ServerRequestInterface();
+    request.
+}
 
 
 /**

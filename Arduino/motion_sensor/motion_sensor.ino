@@ -35,12 +35,14 @@ TimedAction sensorStateAction = TimedAction(5000,updateSensorState);
 // Replace these with your network SSID & PASSWORD
 // NOTE: for some reason, it doesnt work with SCU wifi. Works fine with hotspots.
 //       use your phone's hotspot to test.
-const char* ssid = "YOUR_SSID";
-const char* password = "YOUR_PASSWORD";
+const char* ssid = "Lasya's iPhone";
+const char* password = "pottermore";
+//const char* ssid = "HOME-A9B5-5";
+//const char* password = "dairy8628artist";
 
 // SSID & PASSWORD ESP shows up as while 
 // acting as Access Point.
-const char* newssid = "smartdoorbell";
+const char* newssid = "smartsensor";
 const char* newpassword = "iamsmart";
 
 const char* host = "www.boddapati.com";
@@ -191,10 +193,10 @@ void signalCameraCapture() {
 
 void buttonSignalReceived() {
   Serial.println("button pressed signal received");
-  if(!motion_detected) {
-     signalCameraCapture();
-  }
-  String response = "{ \"camera_capture_signaled\": ";
+  /*if(!motion_detected) {
+     //signalCameraCapture();
+  }*/
+  String response = "{ \"motion_detected\": ";
   response += motion_detected;
   response += "}";
   server.send(200, "application/json", response);
@@ -229,6 +231,7 @@ void setup() {
 
   while (WiFi.status() != WL_CONNECTED) {
     yield();
+    Serial.print(".");
   }
 
   Serial.print("Connected to: ");
