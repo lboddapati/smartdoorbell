@@ -1,102 +1,111 @@
 package edu.scu.userinterface;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class guest_picture extends Activity implements OnItemClickListener {
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class guest_picture extends Activity {
 
     GridView gridview;
     TextView txtSoloMsg;
-    ImageView imgSoloPhoto;
-    Button btnBack;
+    NetworkImageView imgSoloPhoto;
+    ImageLoader mImageloader;
+    VolleyHelper volleyHelper;
+    String JSON_URL = "http://www.boddapati.com/api.php/visitors/2016-03-15";
+    RequestQueue queue;
+    RequestQueue requestQueue;
+    private JSONArray jsonArray = null;
 
-    // initialize array of smallImages (100x75 thumbnails)
-    Integer[] smallImages = { R.drawable.zoo,
-            R.drawable.zoo, R.drawable.zoo,
-            R.drawable.zoo, R.drawable.zoo,
-            R.drawable.zoo, R.drawable.zoo,
-            R.drawable.zoo, R.drawable.zoo,
-            R.drawable.zoo, R.drawable.zoo,
-            R.drawable.zoo, R.drawable.zoo,
-            R.drawable.zoo, R.drawable.zoo};
-
-    //initialize array of high-resolution images (1024x768)
-    Integer[] largeImages = { R.drawable.zoo,
-            R.drawable.zoo, R.drawable.zoo,
-            R.drawable.zoo, R.drawable.zoo,
-            R.drawable.zoo, R.drawable.zoo,
-            R.drawable.zoo, R.drawable.zoo,
-            R.drawable.zoo, R.drawable.zoo,
-            R.drawable.zoo, R.drawable.zoo,
-            R.drawable.zoo, R.drawable.zoo};
-
-    //in case you want to use-save state values
-    Bundle myOriginalMemoryBundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sendRequest();
         setContentView(R.layout.guest_picture);
-        //myOriginalMemoryBundle = savedInstanceState;
-        gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new guest_picture_adapter(this, smallImages));
-        gridview.setOnItemClickListener(this);
+        setContentView(R.layout.guest_picture);
+        if (savedInstanceState != null) {
+            Log.d("STATE", savedInstanceState.toString());
+        }
 
+        queue = Volley.newRequestQueue(this);
+        volleyHelper = VolleyHelper.getInstance(this);
+        mImageloader = volleyHelper.getImageLoader();
+    }
+
+    private void sendRequest() {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, JSON_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        showJSON(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(guest_picture.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private void showJSON(String json) {
+        Log.d("JSONSTRING", json);
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            jsonArray = jsonObject.getJSONObject("visitors").getJSONArray("2016-03-15");
+            gridview = (GridView) findViewById(R.id.gridview);
+            gridview.setAdapter(new guest_picture_adapter(this, jsonArray));
+            gridview.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    showBigScreen(position);
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
     }
 
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        showBigScreen(position);
-    }//onItemClick
 
     private void showBigScreen(int position) {
         // show the selected picture as a single frame
         setContentView(R.layout.guest_picture_solo);
         txtSoloMsg = (TextView) findViewById(R.id.txtSoloMsg);
-        imgSoloPhoto = (ImageView) findViewById(R.id.imgSoloPhoto);
-        txtSoloMsg.setText("image " + position );
-
-        imgSoloPhoto.setImageResource( largeImages[position] );
-
-        btnBack = (Button) findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // redraw the main screen showing the GridView
-                onCreate(myOriginalMemoryBundle);
-            }
-        });
-
-    }// showBigScreen
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_to_monitor, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.menu_to_monitor:
-                Intent menu = new Intent(this, StatusActivity.class);
-                startActivity(menu);
-                return true;
+        imgSoloPhoto = (NetworkImageView) findViewById(R.id.networkImageView);
+        txtSoloMsg.setText("image " + position);
+        try {
+            String url = "http://www.boddapati.com/" + jsonArray.getJSONObject(position).getString("image_url");
+            imgSoloPhoto.setImageUrl(url, mImageloader);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return true;
-    }
 
+    }
 }
+

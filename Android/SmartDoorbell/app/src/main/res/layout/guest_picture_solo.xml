@@ -14,17 +14,11 @@
         android:padding="3dp"
         android:background="#A4C639" />
 
-    <ImageView
-        android:id="@+id/imgSoloPhoto"
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/networkImageView"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_gravity="center|fill"
         android:layout_weight="2" />
 
-    <Button
-        android:id="@+id/btnBack"
-        android:layout_width="100dip"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Back" />
 </LinearLayout>

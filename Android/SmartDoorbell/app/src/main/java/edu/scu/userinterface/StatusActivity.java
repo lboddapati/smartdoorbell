@@ -65,7 +65,6 @@ public class StatusActivity extends AppCompatActivity {
 
          queue = Volley.newRequestQueue(this);
 
-       // showJSON();
 
     }
 
