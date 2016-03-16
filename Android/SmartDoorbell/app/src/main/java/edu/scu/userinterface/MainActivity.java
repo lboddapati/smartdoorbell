@@ -2,9 +2,11 @@ package edu.scu.userinterface;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
@@ -28,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.getBoolean(AppPreferences.SENT_TOKEN_TO_SERVER, false);
 
         b1=(Button)findViewById(R.id.button);
         ed1=(EditText)findViewById(R.id.editText);
