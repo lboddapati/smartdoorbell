@@ -4,5 +4,6 @@
         android:id="@+id/menu_to_pic"
         android:orderInCategory="180"
         app:showAsAction="always"
-        android:title="Guest Photo"/>
+        android:title="Visitors"
+        android:icon="@drawable/ic_gallery"/>
 </menu>

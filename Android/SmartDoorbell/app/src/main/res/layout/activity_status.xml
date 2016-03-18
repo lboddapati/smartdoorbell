@@ -2,8 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="20dp"
-    android:layout_margin="5dp" >
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:paddingLeft="50dp"
+    android:paddingRight="50dp"
+    android:layout_margin="5dp"
+    android:background="@color/White">
 
     <TextView
         android:id="@+id/header"
@@ -14,7 +18,8 @@
         android:text="ACTIVITY AT HOME"
         android:textStyle="bold"
         android:textSize="20sp"
-        android:textColor="#ff00c685" />
+        android:textColor="@color/PinkAccent"
+        android:layout_marginBottom="20dp"/>
 
     <TextView
         android:id="@+id/bedroom"
@@ -25,13 +30,13 @@
         android:layout_marginTop="23dp"
         android:text="Bedroom"
         android:textSize="20sp"
-        android:textColor="#0099FF" />
+        android:textColor="@color/Indigo500" />
 
     <ImageView
         android:id="@+id/bedroom_status"
-        android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:src="@drawable/button_inactive"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ic_inactive"
         android:layout_alignTop="@id/bedroom"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -43,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Living Room"
-        android:textColor="#0099FF"
+        android:textColor="@color/Indigo500"
         android:layout_below="@id/bedroom"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -52,9 +57,9 @@
 
     <ImageView
         android:id="@+id/livingroom_status"
-        android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:src="@drawable/button_inactive"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ic_inactive"
         android:layout_below="@+id/bedroom"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -67,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Kitchen"
-        android:textColor="#0099FF"
+        android:textColor="@color/Indigo500"
         android:layout_below="@id/livingroom"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -76,9 +81,9 @@
 
     <ImageView
         android:id="@+id/kitchen_status"
-        android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:src="@drawable/button_inactive"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ic_inactive"
         android:layout_below="@+id/bedroom"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

@@ -41,7 +41,7 @@ public class VisitorNotification extends AppCompatActivity {
         message.setText(notification.getString("body"));
         ImageLoader imageLoader = volleyHelper.getImageLoader();
         image.setImageUrl(notification.getString("visitor_image"), imageLoader);
-        image.setDefaultImageResId(R.drawable.ic_launcher);
+        image.setDefaultImageResId(R.drawable.ic_person);
         image.setErrorImageResId(android.R.drawable.stat_sys_warning);
 
     }

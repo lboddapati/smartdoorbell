@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="3dp"
     android:orientation="vertical" >
 
     <TextView
@@ -10,14 +9,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textColor="#FFFFFFFF"
-        android:padding="3dp"
-        android:background="#A4C639" />
+        android:textColor="@color/White"
+        android:textSize="20sp"
+        android:text="Visited on 2016-03-15 15:55:51"
+        android:padding="5dp"
+        android:gravity="center"
+        android:background="@color/Indigo500" />
 
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/networkImageView"
         android:layout_width="match_parent"
-        android:layout_height="0dip"
+        android:layout_height="match_parent"
         android:layout_gravity="center|fill"
         android:layout_weight="2" />
 

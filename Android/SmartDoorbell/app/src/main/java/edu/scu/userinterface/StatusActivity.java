@@ -38,15 +38,11 @@ import java.util.ArrayList;
 public class StatusActivity extends AppCompatActivity {
 
 
-   String JSON_URL = "http://www.boddapati.com/motion_sensors";
-   //String JSON_URL = "http://simplifiedcoding.16mb.com/UserRegistration/json.php";
+    String JSON_URL = "http://www.boddapati.com/motion_sensors";
     RequestQueue queue;
     ImageView bedRoomStatus, livingRoomStatus, kitchenStatus;
     RequestQueue requestQueue;
-    String data = "";
-   private JSONArray jsonArray = null;
-    //public static final String JSON_ARRAY = "sensors";
-
+    private JSONArray jsonArray = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +60,6 @@ public class StatusActivity extends AppCompatActivity {
          kitchenStatus = (ImageView)findViewById(R.id.kitchen_status);
 
          queue = Volley.newRequestQueue(this);
-
-
     }
 
     @Override
@@ -120,19 +114,19 @@ public class StatusActivity extends AppCompatActivity {
                 if(id.equalsIgnoreCase("kitchen_sensor") && status.equalsIgnoreCase("1")){
                     Log.d("Status", status);
                     Log.d("ID", id);
-                    kitchenStatus.setImageResource(R.drawable.button_active);
+                    kitchenStatus.setImageResource(R.drawable.ic_active);
 
                 }
                 if(id.equalsIgnoreCase("master_bedroom_sensor") && status.equalsIgnoreCase("1")){
                     Log.d("Status", status);
                     Log.d("ID", id);
-                    bedRoomStatus.setImageResource(R.drawable.button_active);
+                    bedRoomStatus.setImageResource(R.drawable.ic_active);
 
                 }
                 if(id.equalsIgnoreCase("family_room_sensor") && status.equalsIgnoreCase("1")){
                     Log.d("Status", status);
                     Log.d("ID", id);
-                    livingRoomStatus.setImageResource(R.drawable.button_active);
+                    livingRoomStatus.setImageResource(R.drawable.ic_active);
 
                 }
 

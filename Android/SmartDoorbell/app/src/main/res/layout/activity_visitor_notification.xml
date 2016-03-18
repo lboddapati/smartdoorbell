@@ -4,14 +4,16 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="edu.scu.userinterface.VisitorNotification">
+    tools:context="edu.scu.userinterface.VisitorNotification"
+    android:background="@color/White">
 
     <TextView
         android:text="A visitor arrived at your house at 2:20 PM on 03/24/2016"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:id="@+id/message"
+        android:textColor="@color/Black"
         android:layout_marginTop="10dp"/>
 
     <com.android.volley.toolbox.NetworkImageView
@@ -19,7 +21,7 @@
         android:layout_height="300dp"
         android:id="@+id/visitor_image"
         android:layout_below="@id/message"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/ic_person"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"/>
 

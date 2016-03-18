@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -45,7 +46,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private ProgressBar mRegistrationProgressBar;
-    private TextView mInformationTextView;
     private EditText emailid;
     private EditText password;
     private Button registerBtn;
@@ -68,13 +68,14 @@ public class RegistrationActivity extends AppCompatActivity {
                 boolean sentToken = sharedPreferences
                         .getBoolean(AppPreferences.SENT_TOKEN_TO_SERVER, false);
                 if (sentToken) {
-                    mInformationTextView.setText(getString(R.string.gcm_send_message));
+                    Toast.makeText(RegistrationActivity.this, getString(R.string.gcm_send_message), Toast.LENGTH_LONG);
+                    Intent loginIntent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
                 } else {
-                    mInformationTextView.setText(getString(R.string.token_error_message));
+                    Toast.makeText(RegistrationActivity.this, getString(R.string.token_error_message), Toast.LENGTH_LONG);
                 }
             }
         };
-        mInformationTextView = (TextView) findViewById(R.id.informationTextView);
 
         registerBtn = (Button) findViewById(R.id.registerBtn);
         registerBtn.setOnClickListener(new View.OnClickListener() {
@@ -87,16 +88,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     intent.putExtra("password", password.getText().toString().trim());
                     mRegistrationProgressBar.setVisibility(ProgressBar.VISIBLE);
                     startService(intent);
-                    /*SharedPreferences sharedPreferences =
-                            PreferenceManager.getDefaultSharedPreferences(RegistrationActivity.this);
-                    boolean sentToken = sharedPreferences
-                            .getBoolean(AppPreferences.SENT_TOKEN_TO_SERVER, false);
-                    if (sentToken) {
-                        mInformationTextView.setText(getString(R.string.gcm_send_message));
-                    } else {
-                        mInformationTextView.setText(getString(R.string.token_error_message));
-                    }
-                    mRegistrationProgressBar.setVisibility(ProgressBar.GONE);*/
                 }
             }
         });

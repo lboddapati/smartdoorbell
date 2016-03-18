@@ -98,8 +98,11 @@ public class guest_picture extends Activity {
         setContentView(R.layout.guest_picture_solo);
         txtSoloMsg = (TextView) findViewById(R.id.txtSoloMsg);
         imgSoloPhoto = (NetworkImageView) findViewById(R.id.networkImageView);
-        txtSoloMsg.setText("image " + position);
+
         try {
+            String time = jsonArray.getJSONObject(position).getString("time");
+            txtSoloMsg.setText("Visited on "+time);
+
             String url = "http://www.boddapati.com/" + jsonArray.getJSONObject(position).getString("image_url");
             imgSoloPhoto.setImageUrl(url, mImageloader);
         } catch (JSONException e) {

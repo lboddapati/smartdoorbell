@@ -13,5 +13,6 @@
         running the sample again.</string>
     <string name="gcm_SenderId">987784106087</string>
     <string name="title_activity_visitor_notification">VisitorNotification</string>
+    <string name="title_activity_launcher">LauncherActivity</string>
 
 </resources>
