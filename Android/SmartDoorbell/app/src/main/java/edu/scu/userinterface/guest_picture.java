@@ -30,7 +30,7 @@ public class guest_picture extends Activity {
     NetworkImageView imgSoloPhoto;
     ImageLoader mImageloader;
     VolleyHelper volleyHelper;
-    String JSON_URL = "http://www.boddapati.com/api.php/visitors/2016-03-15";
+    String JSON_URL = "http://www.boddapati.com/api.php/visitors/2016-03-18";
     RequestQueue queue;
     RequestQueue requestQueue;
     private JSONArray jsonArray = null;
@@ -75,7 +75,7 @@ public class guest_picture extends Activity {
         Log.d("JSONSTRING", json);
         try {
             JSONObject jsonObject = new JSONObject(json);
-            jsonArray = jsonObject.getJSONObject("visitors").getJSONArray("2016-03-15");
+            jsonArray = jsonObject.getJSONObject("visitors").getJSONArray("2016-03-18");
             gridview = (GridView) findViewById(R.id.gridview);
             gridview.setAdapter(new guest_picture_adapter(this, jsonArray));
             gridview.setOnItemClickListener(new OnItemClickListener() {
