@@ -73,7 +73,7 @@ NOTE: All the APIs return a json response.
         "status":"0"
     }
 
-   Example: www.boddapati.com/motions_sensors/master_bedroom_sensor
+   Example: www.boddapati.com/motion_sensors/master_bedroom_sensor
 
 5. GET REQUEST TO GET ALL MOTION SENSORS STATUSES
    Usage: GET /motions_sensors HTTP/1.1
@@ -102,4 +102,4 @@ NOTE: All the APIs return a json response.
         ]
     }
 
-   Example: www.boddapati.com/motions_sensors
+   Example: www.boddapati.com/motion_sensors

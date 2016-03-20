@@ -176,7 +176,8 @@ void updateSensorState() {
 }
 
 
-// Function to get status of sensor. Returns a json response.
+// Test code: Function to get status of sensor. Returns a json response.
+// NOTE: this code is just for testing.
 void getStatus() {
   String response = "{ \"id\": \"";
   response += sensorID;
@@ -186,16 +187,9 @@ void getStatus() {
   server.send(200, "application/json", response);
 }
 
-void signalCameraCapture() {
-  //TODO
-  Serial.println("Camera capture signal received");
-}
 
 void buttonSignalReceived() {
   Serial.println("button pressed signal received");
-  /*if(!motion_detected) {
-     //signalCameraCapture();
-  }*/
   String response = "{ \"motion_detected\": ";
   response += motion_detected;
   response += "}";

@@ -59,22 +59,22 @@ void handleroot() {
 }
 
 void Camera(){      //reads out pixels from the Arducam mini module
-  pinMode(led, OUTPUT); digitalWrite(led, LOW); // Illuminate with blue LED on GPIO2.
+  pinMode(led, OUTPUT); 
+  digitalWrite(led, LOW); // Illuminate with blue LED on GPIO2.
   myCAM.clear_fifo_flag();
   myCAM.start_capture();
   while (!myCAM.get_bit(ARDUCHIP_TRIG, CAP_DONE_MASK));
   Serial.print("Picture captured. ");
 
-  
   size_t len = myCAM.read_fifo_length();
   if (len >= 393216){
     Serial.println("Over size."); 
     return;
-    }
-  else if (len == 0){
+  } else if (len == 0){
     Serial.println("Size is 0."); 
     return;
-    }
+  }
+  
   Serial.print("Length in bytes: "); 
   Serial.println(len); 
   Serial.println();
@@ -82,12 +82,10 @@ void Camera(){      //reads out pixels from the Arducam mini module
   myCAM.set_fifo_burst(); 
   SPI.transfer(0xFF);
 
-  
-  //if (client.connect(host, 80)) {
   while (!!!client.connect(host, 80)) {
     Serial.println("connection failed, retrying...");
   }
-    Serial.println("connected to host"); 
+  Serial.println("connected to host"); 
     
     
   String start_request = ""; String end_request = "";
@@ -101,22 +99,21 @@ void Camera(){      //reads out pixels from the Arducam mini module
   uint16_t full_length;
   full_length = start_request.length() + len + end_request.length();
 
-   // Serial.println("POST /api.php/visitors HTTP/1.1");
-   Serial.println("Host: www.boddapati.com");
-    Serial.println("Content-Type: multipart/form-data; boundary=AaB03x");
-    Serial.print("Content-Length: "); 
-    Serial.println(full_length);
-    Serial.print(start_request); 
-    Serial.println("Here are sent picture data"); 
-    Serial.println(end_request); 
+  Serial.println("Host: "+host);
+  Serial.println("Content-Type: multipart/form-data; boundary=AaB03x");
+  Serial.print("Content-Length: "); 
+  Serial.println(full_length);
+  Serial.print(start_request); 
+  Serial.println("Here are sent picture data"); 
+  Serial.println(end_request); 
 
-    client.print("POST /api.php/visitors HTTP/1.1\r\n");
-    client.print("Host: www.boddapati.com\r\n");
-    client.print("Content-Type: multipart/form-data; boundary=AaB03x\r\n");
-    client.print("Content-Length: "); 
-    client.print(full_length); 
-    client.print("\r\n");
-    client.print(start_request);
+  client.print("POST /api.php/visitors HTTP/1.1\r\n");
+  client.print("Host: www.boddapati.com\r\n");
+  client.print("Content-Type: multipart/form-data; boundary=AaB03x\r\n");
+  client.print("Content-Length: "); 
+  client.print(full_length); 
+  client.print("\r\n");
+  client.print(start_request);
 
    
   // Read image data from Arducam mini and send away to internet
@@ -125,15 +122,17 @@ void Camera(){      //reads out pixels from the Arducam mini module
   while (len) {
       size_t will_copy = (len < bufferSize) ? len : bufferSize;
       SPI.transferBytes(&buffer[0], &buffer[0], will_copy);
-      if (!client.connected()) break;
+      if (!client.connected()) {
+        break;
+      }
       client.write(&buffer[0], will_copy);
       len -= will_copy;
-      }
+  }
   
-     client.println(end_request);
-     myCAM.CS_HIGH(); 
-     digitalWrite(led, HIGH);
-     Serial.println("data sent to server");
+  client.println(end_request);
+  myCAM.CS_HIGH(); 
+  digitalWrite(led, HIGH);
+  Serial.println("data sent to server");
 
   // Read  the reply from server
   delay(500); 
@@ -142,13 +141,9 @@ void Camera(){      //reads out pixels from the Arducam mini module
     String line = client.readStringUntil('\r'); 
     Serial.print(line);
     response += line;
-    }
-     server.send(200, "application/json", response);
+  }
+  server.send(200, "application/json", response);
   client.stop();
- // server.send(200, "application/json", response);
-  //}
-  
-  
 }
 
 
@@ -159,6 +154,7 @@ void setup() {
   Serial.begin(115200); 
   Serial.println("ArduCAM Mini ESP8266 uploading photo to server");
 
+  /** Camera Setup begin **/
   pinMode(CS, OUTPUT); // set the CS as an output:
   SPI.begin(); // initialize SPI
   SPI.setFrequency(4000000); //4MHz
@@ -169,8 +165,7 @@ void setup() {
   if (temp != 0x55){
     Serial.println("SPI1 interface Error!");
     while(1);
-    }
-  
+  }
 
   // Check if the camera module type is OV2640
   myCAM.wrSensorReg8_8(0xff, 0x01);
@@ -178,13 +173,11 @@ void setup() {
   myCAM.rdSensorReg8_8(OV2640_CHIPID_LOW, &pid);
   if ((vid != 0x26) || (pid != 0x42)){
     Serial.println("Can't find OV2640 module!");
-  while(1);
-  }
-  else{
+    while(1);
+  } else{
     Serial.println("OV2640 detected.");
-    }
+  }
 
- 
  
   // Change to JPEG capture mode and initialize the OV2640 module
   myCAM.set_format(JPEG);  
@@ -193,62 +186,40 @@ void setup() {
   myCAM.OV2640_set_JPEG_size(6);   //0...8
   myCAM.clear_fifo_flag(); 
   myCAM.write_reg(ARDUCHIP_FRAMES, 0x00);  
-  
 
-
-//  // Connect to a router
-//  WiFi.mode(WIFI_STA);
-//  Serial.println("Connecting to AP specified during programming");
-//  WiFi.begin("LMT-89B0", "331M372E70J");
-////  WiFi.begin("LU_ASI", "photoplethysmography");
-//  while (WiFi.status() != WL_CONNECTED) {
-//    delay(500); 
-//    Serial.print("."); 
-//    }
-//  Serial.print("\r\nWiFi connected IP address: ");
-//  Serial.println(WiFi.localIP());
-//  Serial.println();
- // set both access point and station
+  /**Camera setup end**/
 
   // set both access point and station
- WiFi.mode(WIFI_AP_STA);
- WiFi.softAPConfig(ip,ip,nMask);
+  WiFi.mode(WIFI_AP_STA);
+  WiFi.softAPConfig(ip,ip,nMask);
 
- // set ssid & password for access point
- WiFi.softAP(newssid, newpassword);
- server.on("/", handleroot);
- server.on("/capture", Camera);
- server.begin();
- Serial.println("HTTP server started");
+  // set ssid & password for access point
+  WiFi.softAP(newssid, newpassword);
+  server.on("/", handleroot);
+  server.on("/capture", Camera);
+  server.begin();
+  Serial.println("HTTP server started");
 
- //if (strcmp (WiFi.SSID(),ssid) != 0) {
-     Serial.print("Connecting to ");
-     Serial.println(ssid);
-     WiFi.begin(ssid, password);
- //}
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);
 
- while (WiFi.status() != WL_CONNECTED) {
-   yield();
-   Serial.print(".");
- }
-
- Serial.print("Connected to: ");
- Serial.print(WiFi.SSID());
- Serial.print(", IP address: ");
- Serial.println(WiFi.localIP());
- Serial.print(newssid);
- Serial.print(" server ip: ");
- Serial.println(WiFi.softAPIP());
-
-
- // Camera(myCAM);
+  while (WiFi.status() != WL_CONNECTED) {
+    yield();
+    Serial.print(".");
   }
-  
 
-void loop() {
-  //Camera(myCAM);
-  server.handleClient();
+  Serial.print("Connected to: ");
+  Serial.print(WiFi.SSID());
+  Serial.print(", IP address: ");
+  Serial.println(WiFi.localIP());
+  Serial.print(newssid);
+  Serial.print(" server ip: ");
+  Serial.println(WiFi.softAPIP());
+}
   
+void loop() {
+  server.handleClient();
   //delay(60000);
 }
 

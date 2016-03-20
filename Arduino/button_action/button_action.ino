@@ -30,27 +30,10 @@ const int led = D2;
 void setup(void){
   pinMode(D5, INPUT);  // D5 pin mode
   pinMode(led, OUTPUT); // D2 pin mode
-  //pinMode(D0, OUTPUT);
   digitalWrite(led, HIGH);
-  //digitalWrite(D0, HIGH);
   
   Serial.begin(115200);
   Serial.println("setup done");
-  /*WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-  Serial.println("");
-  // Wait for connection
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("");
-  Serial.print("Connected to ");
-  Serial.println(ssid);
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
-  Serial.print("Soft AP IP address: ");
-  Serial.println(WiFi.softAPIP());*/
 
 }
 

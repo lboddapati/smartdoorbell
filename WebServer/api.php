@@ -6,7 +6,9 @@
 require 'vendor/autoload.php';
 
 date_default_timezone_set('America/Los_Angeles');
-
+$HOST="http://www.boddapati.com/";
+$GCM_SERVER_API_KEY="AIzaSyDPI6FjtFgt48GhrWzY8QKonlyXc-YkhdU";
+$GCM_APP_REG_TOKEN = "eTGCIczkDqQ:APA91bFWaGMw9AzkyLrErvAA34yG-raW4ijJ5WvpPOH1xfv6jYb6qWXlxNe1FXOT59GkARnIW93YkXxeGpYBreepAXMSBW74H-nUvn8q_7KTICYTwxKa5uchyL0NcqSYOreX3BFqNKTk";
 
 function getDB()
 {
@@ -21,29 +23,53 @@ function getDB()
     return $dbConnection;
 }
 
+function sendNotification($image_url) {
+    global $GCM_APP_REG_TOKEN;
+    global $GCM_SERVER_API_KEY;
+
+    $data = array(
+      'to'      => $GCM_APP_REG_TOKEN,
+      'data' => array(
+           'title' => 'You have a Guest',
+           'body' => 'A visitor arrived at your house at '.date('h:i:s a').' on '.date('m/d/Y'),
+           'badge' => '1',
+           'visitor_image' => $image_url
+      )
+    );
+
+    error_log(json_encode($data));
+    $options = array(
+      'http' => array(
+        'method'  => 'POST',
+        'content' => json_encode( $data ),
+        'header'=>  "Authorization:key=".$GCM_SERVER_API_KEY."\r\n" .
+                    "Content-Type: application/json\r\n" .
+                    "Accept: application/json\r\n"
+      )
+    );
+    $url = "https://gcm-http.googleapis.com/gcm/send";
+    $context  = stream_context_create( $options );
+    $result = file_get_contents( $url, false, $context );
+    $response = json_decode( $result );
+    error_log($result);
+}
+
 /**
  * Step 2: Instantiate a Slim application
- *
- * This example instantiates a Slim application using
- * its default settings. However, you will usually configure
- * your Slim application now by passing an associative array
- * of setting names and values into the application constructor.
  */
 $app = new Slim\App();
 
 /**
  * Step 3: Define the Slim application routes
  */
-$app->get('/', function ($request, $response, $args) {
-    $response->write("Welcome to Slim World!");
-    return $response;
-});
 
 
 /**
  * POST request to upload image
  */
 $app->post('/visitors', function ($request, $response, $args) {
+    global $HOST;
+
     $response->withHeader('Content-type', 'application/json');
     $resp_body = array();
 
@@ -77,7 +103,7 @@ $app->post('/visitors', function ($request, $response, $args) {
         try {
             $db = getDB();
             $query = "INSERT INTO visitors (date, time, image_url) values (STR_TO_DATE('".$date."', '%Y-%m-%d'), "
-                               ."STR_TO_DATE('".$time."', '%H-%i-%s'), '".$file."')";
+                               ."STR_TO_DATE('".$time."', '%h:%i:%s'), '".$file."')";
             error_log($query);
             $sth = $db->prepare($query);
             $sth->execute();
@@ -86,7 +112,7 @@ $app->post('/visitors', function ($request, $response, $args) {
             $resp_body["message"] = "image uploaded successfully";
             $response->withStatus(201);
 
-            push_visitor_notification($file);
+            sendNotification($HOST.$file);
  
         } catch(PDOException $e) {
             unlink($file);
@@ -104,12 +130,6 @@ $app->post('/visitors', function ($request, $response, $args) {
     $response->getBody()->write(json_encode($resp_body));
     return $response;
 });
-
-
-function push_visitor_notification($file) {
-    ServerRequestInterface $request = new ServerRequestInterface();
-    request.
-}
 
 
 /**
